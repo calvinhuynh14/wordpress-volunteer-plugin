@@ -31,4 +31,13 @@ function volunteer_activation() {
 
 register_activation_hook(__FILE__, 'volunteer_activation');
 
+
+function volunteer_deactivation() {
+    global $wpdb;
+
+    $wpdb->query("DROP TABLE IF EXIST Opportunities");
+}
+
+register_deactivation_hook(__FILE__, 'volunteer_deactivation');
+
 ?>
