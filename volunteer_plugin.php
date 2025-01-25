@@ -54,6 +54,46 @@ function volunteer_plugin_menu() {
 function volunteer_admin_page() {
     ?>
     <h1>Volunteer Opportunities</h1>
+    <table>
+        <form method='post'>
+            <tr>
+                <td>Position:</td>
+                <td><input type='text' name='position' required></td>
+                <td>Organization:</td>
+                <td><input type='text' name='organization' required></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type='email' name='email' required></td>
+                <td>Location:</td>
+                <td><input type='text' name='location' required></td>
+            </tr>
+            <tr>
+                <td>Hours:</td>
+                <td><input type='number' name='hours' required></td>
+                <td>Type:</td>
+                <td>
+                    <select name='type' required>
+                        <option value='one-time'>One-time</option>
+                        <option value='recurring'>Recurring</option>
+                        <option value='seasonal'>Seasonal</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td colspan='3'><textarea name='description' required></textarea></td>
+            </tr>
+            <tr>
+                <td>Skills Required:</td>
+                <td colspan='3'><textarea name='skills' required></textarea></td>
+            </tr>
+            <tr>
+                <td colspan='4'><input type='submit' name='submit' value='Add Opportunity'></td>
+            </tr>
+        </form>
+    </table>
+
     <?php
 
 }
