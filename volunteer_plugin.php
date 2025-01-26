@@ -24,7 +24,7 @@ function volunteer_activation() {
                    Skills_required TEXT NOT NULL
                    );
                 ");
-    // Insert a sample opportunity
+    // Insert a sample opportunities
     $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
                   VALUES('Painter', 'Charity Foundation', 'one-time', 'tester@gmail.com', 'Painting a house for my old uncle', '1234 Elm St', 4, 'Painting, Teamwork, Collaboration');
                 ");
@@ -71,43 +71,6 @@ function volunteer_admin_page() {
     <h1 style="text-align: center; font-size: 3em; color: #1D3557; padding: 15px;">Volunteer Opportunities</h1>
     <form method="post" style="max-width: 1000px; margin: auto;">
         <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
-            <!-- Organization Information Section -->
-            <fieldset style="flex: 1; border: 2px solid #1D3557; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
-                <legend style="font-weight: bold; font-size: 1.5em; color: #457B9D; padding: 0 5px;">Organization Information:</legend>
-
-                <label for="organization" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Organization:</label>
-                <input 
-                    type="text" 
-                    id="organization" 
-                    name="organization" 
-                    maxlength="100" 
-                    placeholder="E.g. Spring Charity" 
-                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
-                    required
-                >
-
-                <label for="location" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Location:</label>
-                <input 
-                    type="text" 
-                    id="location" 
-                    name="location" 
-                    maxlength="100" 
-                    placeholder="E.g. 123 Main St, ON L5L E5E" 
-                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
-                    required
-                >
-
-                <label for="email" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Email:</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    maxlength="100" 
-                    placeholder="E.g. johndoe@example.com" 
-                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
-                    required
-                >
-            </fieldset>
 
             <!-- Position Information Section -->
             <fieldset  style="flex: 1; border: 2px solid #1D3557; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
@@ -163,18 +126,54 @@ function volunteer_admin_page() {
                     required
                 ></textarea>
             </fieldset>
+
+            <!-- Organization Information Section -->
+            <fieldset style="flex: 1; border: 2px solid #1D3557; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+                <legend style="font-weight: bold; font-size: 1.5em; color: #457B9D; padding: 0 5px;">Organization Information:</legend>
+
+                <label for="organization" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Organization:</label>
+                <input 
+                    type="text" 
+                    id="organization" 
+                    name="organization" 
+                    maxlength="100" 
+                    placeholder="E.g. Spring Charity" 
+                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
+                    required
+                >
+
+                <label for="location" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Location:</label>
+                <input 
+                    type="text" 
+                    id="location" 
+                    name="location" 
+                    maxlength="100" 
+                    placeholder="E.g. 123 Main St, ON L5L E5E" 
+                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
+                    required
+                >
+
+                <label for="email" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Email:</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    maxlength="100" 
+                    placeholder="E.g. johndoe@example.com" 
+                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
+                    required
+                >
+            </fieldset>
         </div>
 
         <!-- Submit Button -->
         <div style="text-align: center;">
-            <input type="submit" name="submit" value="Add Opportunity"style="padding: 10px 20px; background-color: #0073aa; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+            <input type="submit" name="submit" value="Add Opportunity" style="padding: 10px 20px; background-color: #0073aa; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
         </div>
     </form>
 
-
     <?php
-}
-
+};
 
 
 ?>
