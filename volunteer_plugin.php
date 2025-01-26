@@ -61,7 +61,8 @@ function volunteer_admin_page() {
     global $wpdb;
     $table_name = "wp_Opportunities";
 
-    $opportunities = $wpdb->query("SELECT * FROM $table_name")
+    $opportunities = $wpdb->get_results("SELECT * FROM $table_name");
+    echo $opportunities;
     ?>
     <!-- Colour Palette
      Black: 1F1F1F
@@ -71,9 +72,9 @@ function volunteer_admin_page() {
      Off-White: F1FAEE
      Red Accent: E63946
     -->
-    <h1 style="text-align: center; font-size: 3em; color: #1D3557; padding: 15px;">Volunteer Opportunities</h1>
+    <h1 style="text-align: center; font-size: 3em; color: #1D3557; padding: 10px;">Volunteer Opportunities</h1>
 
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 2px solid #1D3557;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 5%; border: 2px solid #1D3557;">
         <thead>
             <tr>
                 <th style="font-size: 1.25em; border: 2px solid #1D3557;">Position</th>
@@ -84,9 +85,29 @@ function volunteer_admin_page() {
                 <th style="font-size: 1.25em; border: 2px solid #1D3557;">Location</th>
                 <th style="font-size: 1.25em; border: 2px solid #1D3557;">Hours</th>
                 <th style="font-size: 1.25em; border: 2px solid #1D3557;">Skills Required</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;"> Actions</th>
             </tr>
-            
         </thead>
+        <tbody>
+            <?php 
+            if ($opportunities) {
+                foreach ($opportunities as $opportunity){
+                    echo "<tr>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Position) . "</td>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Organization) . "</td>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Type) . "</td>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Email) . "</td>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Description) . "</td>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Location) . "</td>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Hours) . "</td>";
+                    echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Skills_required) . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='5' style='text-align: center; padding: 10px;'>No opportunities found.</td></tr>";
+            }
+            ?>
+        </tbody>
     </table>
     <!-- Field Form -->
     <form method="post" style="max-width: 1000px; margin: auto;">
@@ -188,7 +209,7 @@ function volunteer_admin_page() {
 
         <!-- Submit Button -->
         <div style="text-align: center;">
-            <input type="submit" name="submit" value="Add Opportunity" style="padding: 10px 20px; background-color: #0073aa; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+            <input type="submit" name="submit" value="Add Opportunity" style="padding: 10px 20px; background-color: #457B9D; color: #F1FAEE; border: 1px solid #1D3557; border-radius: 4px; cursor: pointer; font-size: 16px;">
         </div>
     </form>
 
