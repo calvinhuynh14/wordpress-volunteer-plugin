@@ -26,8 +26,14 @@ function volunteer_activation() {
                 ");
     // Insert a sample opportunity
     $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
-                  VALUES('Painter', 'Charity Foundation', 'one-time', 'tester@gmail.com', 'Painting a house for my old uncle', '1234 Elm St', 4, 'Painting skills');
+                  VALUES('Painter', 'Charity Foundation', 'one-time', 'tester@gmail.com', 'Painting a house for my old uncle', '1234 Elm St', 4, 'Painting, Teamwork, Collaboration');
                 ");
+    $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
+                    VALUES('Volunteer Knitter', 'Hamilton Public Library', 'recurring', 'tester@hpl.ca', 'Knit accessories for children to stay warm', '987 Main St', 6, 'Knitting, Communication, Empathy');
+                    ");
+
+    // Reset AUTO_INCREMENT to 1
+    $wpdb->query("ALTER TABLE $table_name AUTO_INCREMENT = 1");
 }
 register_activation_hook(__FILE__, 'volunteer_activation');
 
@@ -35,25 +41,9 @@ register_activation_hook(__FILE__, 'volunteer_activation');
 function volunteer_deactivation() {
     global $wpdb;
     // Drop the table
-    $wpdb->query("DROP TABLE IF EXIST Opportunities");
+    $wpdb->query("DROP TABLE IF EXISTS wp_Opportunities");
 }
 register_deactivation_hook(__FILE__, 'volunteer_deactivation');
-
-function volunteer_enqueue_styles(){
-    if ($hook !== 'volunteer-opportunity-plugin') {
-        return;
-    }
-
-    wp_enqueue_style(
-        'volunteer-admin-form-styles',
-        plugin_url('assets/style_form.css', __FILE__),
-        array(),
-        '1.0',
-        'all'
-    );
-}
-
-add_action('admin_enqueue_scripts', 'volunteer_enqueue_styles');
 
 // Add to the admin menu
 add_action( 'admin_menu', 'volunteer_plugin_menu' );
