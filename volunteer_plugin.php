@@ -39,6 +39,22 @@ function volunteer_deactivation() {
 }
 register_deactivation_hook(__FILE__, 'volunteer_deactivation');
 
+function volunteer_enqueue_styles(){
+    if ($hook !== 'volunteer-opportunity-plugin') {
+        return;
+    }
+
+    wp_enqueue_style(
+        'volunteer-admin-form-styles',
+        plugin_url('assets/style_form.css', __FILE__),
+        array(),
+        '1.0',
+        'all'
+    );
+}
+
+add_action('admin_enqueue_scripts', 'volunteer_enqueue_styles');
+
 // Add to the admin menu
 add_action( 'admin_menu', 'volunteer_plugin_menu' );
 function volunteer_plugin_menu() {
@@ -54,48 +70,101 @@ function volunteer_plugin_menu() {
 function volunteer_admin_page() {
     ?>
     <h1>Volunteer Opportunities</h1>
-    <table>
-        <form method='post'>
-            <tr>
-                <td>Position:</td>
-                <td><input type='text' name='position' required></td>
-                <td>Organization:</td>
-                <td><input type='text' name='organization' required></td>
-            </tr>
-            <tr>
-                <td>Email:</td>
-                <td><input type='email' name='email' required></td>
-                <td>Location:</td>
-                <td><input type='text' name='location' required></td>
-            </tr>
-            <tr>
-                <td>Hours:</td>
-                <td><input type='number' name='hours' required></td>
-                <td>Type:</td>
-                <td>
-                    <select name='type' required>
-                        <option value='one-time'>One-time</option>
-                        <option value='recurring'>Recurring</option>
-                        <option value='seasonal'>Seasonal</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Description:</td>
-                <td colspan='3'><textarea name='description' required></textarea></td>
-            </tr>
-            <tr>
-                <td>Skills Required:</td>
-                <td colspan='3'><textarea name='skills' required></textarea></td>
-            </tr>
-            <tr>
-                <td colspan='4'><input type='submit' name='submit' value='Add Opportunity'></td>
-            </tr>
-        </form>
-    </table>
+    <form method="post">
+        <!-- Organization Information Section -->
+        <fieldset>
+            <legend>Organization Information:</legend>
+
+            <label for="organization">Organization:</label>
+            <input 
+                type="text" 
+                id="organization" 
+                name="organization" 
+                maxlength="100" 
+                placeholder="E.g. Spring Charity" 
+                required
+            >
+
+            <label for="location">Location:</label>
+            <input 
+                type="text" 
+                id="location" 
+                name="location" 
+                maxlength="100" 
+                placeholder="E.g. 123 Main St, ON L5L E5E" 
+                required
+            >
+
+            <label for="email">Email:</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                maxlength="100" 
+                placeholder="E.g. johndoe@example.com" 
+                required
+            >
+        </fieldset>
+
+        <!-- Position Information Section -->
+        <fieldset style='border: 1px solid #000000'>
+            <legend>Position Information:</legend>
+
+            <label for="position">Position:</label>
+            <input 
+                type="text" 
+                id="position" 
+                name="position" 
+                maxlength="100" 
+                placeholder="E.g. Painter" 
+                required
+            >
+
+            <label for="hours">Hours:</label>
+            <input 
+                type="number" 
+                id="hours" 
+                name="hours" 
+                min="1" 
+                max="1000" 
+                placeholder="E.g. 10" 
+                required
+            >
+
+            <label for="type">Type:</label>
+            <select id="type" name="type" required>
+                <option value="one-time">One-time</option>
+                <option value="recurring">Recurring</option>
+                <option value="seasonal">Seasonal</option>
+            </select>
+
+            <label for="description">Description (500 chars.):</label>
+            <textarea 
+                id="description" 
+                name="description" 
+                maxlength="500" 
+                placeholder="E.g. Help Spring Charity repaint their gymnasium." 
+                required
+            ></textarea>
+
+            <label for="skills">Skills Required (500 chars.):</label>
+            <textarea 
+                id="skills" 
+                name="skills" 
+                maxlength="500" 
+                placeholder="E.g. Teamwork, painting, communication, time management" 
+                required
+            ></textarea>
+        </fieldset>
+
+        <!-- Submit Button -->
+        <div>
+            <input type="submit" name="submit" value="Add Opportunity">
+        </div>
+    </form>
+
 
     <?php
-
 }
 
 
