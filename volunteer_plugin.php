@@ -62,7 +62,25 @@ function volunteer_admin_page() {
     $table_name = "wp_Opportunities";
 
     $opportunities = $wpdb->get_results("SELECT * FROM $table_name");
-    echo $opportunities;
+
+    // Handle Delete Button
+    if (isset($_POST['delete'])){
+        $opportunity_id = intval($_POST['opportunity_id']);
+
+        $deleted = $wpdb->delete(
+            $table_name,
+            array('OpportunityID'=>$opportunity_id),
+            array('%d'),
+        );
+
+        if($deleted) { 
+            echo '<div class="updated"><p>Opportunity deleted successfully.</p></div>';
+        exit;
+        } else {
+            echo '<div class="error"><p>Failed to delete the opportunity.</p></div>';
+        }
+    }
+
     ?>
     <!-- Colour Palette
      Black: 1F1F1F
@@ -101,10 +119,17 @@ function volunteer_admin_page() {
                     echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Location) . "</td>";
                     echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Hours) . "</td>";
                     echo "<td style='border: 2px solid #1D3557; padding: 10px'>". esc_html($opportunity->Skills_required) . "</td>";
+                    echo "<td style='border: 1px solid #1F1F1F; padding: 10px; text-align: center;'>";
+                    echo "<form method='post' style='display: inline;'>
+                            <input type='hidden' name='opportunity_id' value='" . esc_attr($opportunity->OpportunityID) . "'>
+                            <input type='submit' name='delete' value='Delete' style='color: white; background-color: #D90429; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;'>
+                        </form>";
+                    echo "</td>";
+
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='5' style='text-align: center; padding: 10px;'>No opportunities found.</td></tr>";
+                echo "<tr><td colspan='12' style='text-align: center; color: #E63946; font-weight: bold; font-size: 1.25em; padding: 10px;'>No opportunities found.</td></tr>";
             }
             ?>
         </tbody>
