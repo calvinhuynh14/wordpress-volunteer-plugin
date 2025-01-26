@@ -58,6 +58,10 @@ function volunteer_plugin_menu() {
 }
 
 function volunteer_admin_page() {
+    global $wpdb;
+    $table_name = "wp_Opportunities";
+
+    $opportunities = $wpdb->query("SELECT * FROM $table_name")
     ?>
     <!-- Colour Palette
      Black: 1F1F1F
@@ -67,8 +71,24 @@ function volunteer_admin_page() {
      Off-White: F1FAEE
      Red Accent: E63946
     -->
-
     <h1 style="text-align: center; font-size: 3em; color: #1D3557; padding: 15px;">Volunteer Opportunities</h1>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 2px solid #1D3557;">
+        <thead>
+            <tr>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Position</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Organziation</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Type</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Email</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Description</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Location</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Hours</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Skills Required</th>
+            </tr>
+            
+        </thead>
+    </table>
+    <!-- Field Form -->
     <form method="post" style="max-width: 1000px; margin: auto;">
         <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
 
