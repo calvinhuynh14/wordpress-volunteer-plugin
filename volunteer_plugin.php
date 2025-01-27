@@ -6,7 +6,14 @@
  * Author: Calvin Huynh 000819227
  */
 
- 
+ /**
+  * Statement of Authorship "
+  * StAuth10127: I Calvin Huynh, 000819227 certify that this material is my original work. No other person's work has been used without due acknowledgement. I    * have not made my work available to anyone else."  
+  */
+
+  /***
+   * 
+   */
 // Activation Hook - Creates database table
 function volunteer_activation() {
     global $wpdb;
@@ -44,6 +51,16 @@ function volunteer_deactivation() {
     $wpdb->query("DROP TABLE IF EXISTS wp_Opportunities");
 }
 register_deactivation_hook(__FILE__, 'volunteer_deactivation');
+
+// Uninstall Hook - Uninstalls and drops the database table
+function volunteer_plugin_uninstall(){
+    global $wpdb;
+
+    $table_name = 'wp_Opportunities';
+
+    $wpdb->query("DROP TABLE IF EXISTS $table_name");
+}
+register_uninstall_hook(__FILE__, 'volunteer_plugin_uninstall')
 
 // Add to the admin menu
 add_action( 'admin_menu', 'volunteer_plugin_menu' );
@@ -339,6 +356,7 @@ function volunteer_admin_page() {
     <?php
 };
 
+// Shortcode for Volunteer
 add_shortcode('volunteer', 'volunteer_shortcode');
 function volunteer_shortcode($atts) {
     global $wpdb;
@@ -352,9 +370,9 @@ function volunteer_shortcode($atts) {
         $atts
     );
 
+    // Set up Parameters for the Query
     $where = "1=1";
     $params = array();
-
     if (!empty($atts['hours'])){
         $where .= ' AND Hours < %d';
         $params[] = intval($atts['hours']);
