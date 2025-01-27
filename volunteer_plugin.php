@@ -156,7 +156,11 @@ function volunteer_admin_page() {
                     echo "<td style='border: 1px solid #1F1F1F; padding: 10px; text-align: center;'>";
                     echo "<form method='post' style='display: inline;'>
                             <input type='hidden' name='opportunity_id' value='" . esc_attr($opportunity->OpportunityID) . "'>
-                            <input type='submit' name='delete' value='Delete' style='color: white; background-color: #D90429; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;'>
+                            <input type='submit' name='edit' value='Edit' style='color: white; background-color: #38b000; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;'>
+                        </form>";
+                    echo "<form method='post' style='display: inline;'>
+                            <input type='hidden' name='opportunity_id' value='" . esc_attr($opportunity->OpportunityID) . "'>
+                            <input type='submit' name='delete' value='Delete' style='color: white; background-color: #E63946; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;'>
                         </form>";
                     echo "</td>";
 
