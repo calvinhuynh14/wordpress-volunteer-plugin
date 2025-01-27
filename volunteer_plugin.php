@@ -60,7 +60,7 @@ function volunteer_plugin_uninstall(){
 
     $wpdb->query("DROP TABLE IF EXISTS $table_name");
 }
-register_uninstall_hook(__FILE__, 'volunteer_plugin_uninstall')
+register_uninstall_hook(__FILE__, 'volunteer_plugin_uninstall');
 
 // Add to the admin menu
 add_action( 'admin_menu', 'volunteer_plugin_menu' );
