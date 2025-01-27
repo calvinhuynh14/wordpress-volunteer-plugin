@@ -386,8 +386,25 @@ function volunteer_shortcode($atts) {
         </thead>
         <tbody>
             <?php if ($opportunities): ?>
-                <?php foreach ($opportunities as $opportunity): ?>
-                    <tr>
+                <?php foreach ($opportunities as $opportunity):
+                    /**
+                     * Green: #5FC780
+                     * Yellow: #FDDA79
+                     * Red: #D85761
+                     */
+                    $background_colour = "";
+                    if (empty($atts['hours']) && empty($atts['type'])){
+                        if ($opportunity->Hours < 10){ // Green
+                            $background_colour = "#5FC780";
+                        } elseif ($opportunity->Hours <= 100 && $opportunity->Hours >= 10){ // Yellow
+                            $background_colour = "#FDDA79";
+                        } elseif ($opportunity->Hours > 100){ // Red
+                            $background_colour = "#D85761";
+                        }   
+                    }
+                    ?>
+                    
+                    <tr style="background-color: <?php echo $background_colour; ?>;">
                         <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Position); ?></td>
                         <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Organization); ?></td>
                         <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Type); ?></td>
