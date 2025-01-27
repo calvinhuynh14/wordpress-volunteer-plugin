@@ -61,7 +61,18 @@ function volunteer_admin_page() {
     global $wpdb;
     $table_name = "wp_Opportunities";
 
+    // Store database entries for table
     $opportunities = $wpdb->get_results("SELECT * FROM $table_name");
+
+    // Store opportunity to edit
+    $edit_opportunity = null;
+    if( isset($_POST['edit'])) {
+        $opportunity_id = intval($_POST['opportunity_id']);
+        $editing_opportunity = $wpdb->get_row( $wpdb->prepare("SELECT * 
+                                                                FROM $table_name 
+                                                                WHERE OpportunityID = %d", $opportunity_id));
+
+    }
 
     // Handle Delete Button
     if (isset($_POST['delete'])){
@@ -175,6 +186,8 @@ function volunteer_admin_page() {
 
     <!-- Field Form -->
     <form method="post" style="max-width: 1000px; margin: auto;">
+        <input type="hidden" name="opportunity_id" value="<?php echo $editing_opportunity ? esc_attr($editing_opportunity->OpportunityID) : ''; ?>">
+
         <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
 
             <!-- Position Information Section -->
@@ -187,7 +200,8 @@ function volunteer_admin_page() {
                     id="position" 
                     name="position" 
                     maxlength="100" 
-                    placeholder="E.g. Painter" 
+                    placeholder="E.g. Painter"
+                    value="<?php echo $editing_opportunity ? esc_attr($editing_opportunity->Position) : ''; ?>"  
                     style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
                     required
                 >
@@ -200,15 +214,16 @@ function volunteer_admin_page() {
                     min="1" 
                     max="1000" 
                     placeholder="E.g. 10" 
+                    value="<?php echo $editing_opportunity ? esc_attr($editing_opportunity->Hours) : ''; ?>" 
                     style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
                     required
                 >
 
                 <label for="type" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Type:</label>
                 <select id="type" name="type" required>
-                    <option value="one-time">One-time</option>
-                    <option value="recurring">Recurring</option>
-                    <option value="seasonal">Seasonal</option>
+                    <option value="one-time" <?php echo $editing_opportunity && $editing_opportunity->Type === 'one-time' ? 'selected' : ''; ?>>One-time</option>
+                    <option value="recurring" <?php echo $editing_opportunity && $editing_opportunity->Type === 'recurring' ? 'selected' : ''; ?>>Recurring</option>
+                    <option value="seasonal" <?php echo $editing_opportunity && $editing_opportunity->Type === 'seasonal' ? 'selected' : ''; ?>>Seasonal</option>
                 </select>
 
                 <label for="description" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Description (500 chars.):</label>
@@ -219,7 +234,7 @@ function volunteer_admin_page() {
                     placeholder="E.g. Help Spring Charity repaint their gymnasium." 
                     style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
                     required
-                ></textarea>
+                ><?php echo $editing_opportunity ? esc_textarea($editing_opportunity->Description) : ''; ?></textarea>
 
                 <label for="skills" style="display: block; color: #457B9D; margin: 10px 0 5px; font-weight: bold;">Skills Required (500 chars.):</label>
                 <textarea 
@@ -229,7 +244,7 @@ function volunteer_admin_page() {
                     placeholder="E.g. Teamwork, painting, communication, time management" 
                     style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
                     required
-                ></textarea>
+                ><?php echo $editing_opportunity ? esc_textarea($editing_opportunity->Skills_required) : ''; ?></textarea>
             </fieldset>
 
             <!-- Organization Information Section -->
@@ -243,6 +258,7 @@ function volunteer_admin_page() {
                     name="organization" 
                     maxlength="100" 
                     placeholder="E.g. Spring Charity" 
+                    value="<?php echo $editing_opportunity ? esc_attr($editing_opportunity->Organization) : ''; ?>" 
                     style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
                     required
                 >
@@ -254,6 +270,7 @@ function volunteer_admin_page() {
                     name="location" 
                     maxlength="100" 
                     placeholder="E.g. 123 Main St, ON L5L E5E" 
+                    value="<?php echo $editing_opportunity ? esc_attr($editing_opportunity->Location) : ''; ?>" 
                     style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
                     required
                 >
@@ -265,6 +282,7 @@ function volunteer_admin_page() {
                     name="email" 
                     maxlength="100" 
                     placeholder="E.g. johndoe@example.com" 
+                    value="<?php echo $editing_opportunity ? esc_attr($editing_opportunity->Email) : ''; ?>" 
                     style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #1F1F1F; border-radius: 4px;"
                     required
                 >
