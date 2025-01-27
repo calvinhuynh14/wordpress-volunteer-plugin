@@ -56,7 +56,7 @@ function volunteer_plugin_menu() {
         'volunteer_admin_page',         // Function to call
     );
 }
-
+// Admin page - Containing Table of positions and form to create new positions
 function volunteer_admin_page() {
     global $wpdb;
     $table_name = "wp_Opportunities";
@@ -75,6 +75,7 @@ function volunteer_admin_page() {
                                                                 WHERE OpportunityID = %d", $opportunity_id));
     }
 
+    // Handle Update Button
     if ( isset($_POST['update'])){
         $opportunity_id = intval($_POST['opportunity_id']);
 
@@ -338,5 +339,60 @@ function volunteer_admin_page() {
     <?php
 };
 
+add_shortcode('volunteer', 'volunteer_shortcode');
+function volunteer_shortcode($atts) {
+    global $wpdb;
+    $table_name = 'wp_Opportunities';
 
+    // Get data entries
+    $opportunities = $wpdb->get_results("SELECT * FROM $table_name");
+
+    $atts = shortcode_atts(
+        array(
+            'hours'=>null, 
+            'type'=>null,
+        ),
+        $atts
+    );
+
+    ob_start();
+    ?>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 5%; border: 2px solid #1D3557;">
+        <thead>
+            <tr>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Position</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Organziation</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Type</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Email</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Description</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Location</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Hours</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;">Skills Required</th>
+                <th style="font-size: 1.25em; border: 2px solid #1D3557;"> Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if ($opportunities): ?>
+                <?php foreach ($opportunities as $opportunity): ?>
+                    <tr>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Position); ?></td>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Organization); ?></td>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Type); ?></td>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Email); ?></td>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Description); ?></td>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Location); ?></td>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Hours); ?></td>
+                        <td style="border: 2px solid #1D3557; padding: 10px"><?php echo esc_html($opportunity->Skills_required); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 10px; color: #E63946;">No opportunities found.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+    <?php
+        };
 ?>
