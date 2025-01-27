@@ -344,9 +344,6 @@ function volunteer_shortcode($atts) {
     global $wpdb;
     $table_name = 'wp_Opportunities';
 
-    // Get data entries
-    $opportunities = $wpdb->get_results("SELECT * FROM $table_name");
-
     $atts = shortcode_atts(
         array(
             'hours'=>null, 
@@ -354,6 +351,22 @@ function volunteer_shortcode($atts) {
         ),
         $atts
     );
+
+    $where = "1=1";
+    $params = array();
+
+    if (!empty($atts['hours'])){
+        $where .= ' AND Hours < %d';
+        $params[] = intval($atts['hours']);
+    }
+    if (!empty($atts['type'])) {
+        $where .= ' AND Type = %s';
+        $params[] = sanitize_text_field($atts['type']);
+    }
+
+    // Search with parameters
+    $query = "SELECT * FROM $table_name WHERE $where";
+    $opportunities = $wpdb->get_results($wpdb->prepare($query, $params));
 
     ob_start();
     ?>
@@ -369,7 +382,6 @@ function volunteer_shortcode($atts) {
                 <th style="font-size: 1.25em; border: 2px solid #1D3557;">Location</th>
                 <th style="font-size: 1.25em; border: 2px solid #1D3557;">Hours</th>
                 <th style="font-size: 1.25em; border: 2px solid #1D3557;">Skills Required</th>
-                <th style="font-size: 1.25em; border: 2px solid #1D3557;"> Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -394,5 +406,5 @@ function volunteer_shortcode($atts) {
         </tbody>
     </table>
     <?php
-        };
+};
 ?>
