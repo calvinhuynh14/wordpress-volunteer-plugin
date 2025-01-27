@@ -66,11 +66,50 @@ function volunteer_admin_page() {
 
     // Store opportunity to edit
     $edit_opportunity = null;
+
+    // Handle Edit Button
     if( isset($_POST['edit'])) {
         $opportunity_id = intval($_POST['opportunity_id']);
         $editing_opportunity = $wpdb->get_row( $wpdb->prepare("SELECT * 
                                                                 FROM $table_name 
                                                                 WHERE OpportunityID = %d", $opportunity_id));
+    }
+
+    if ( isset($_POST['update'])){
+        $opportunity_id = intval($_POST['opportunity_id']);
+
+        $position = sanitize_text_field($_POST['position']);
+        $hours = intval($_POST['hours']);
+        $type = sanitize_text_field($_POST['type']);
+        $description = sanitize_textarea_field($_POST['description']);
+        $skills = sanitize_textarea_field($_POST['skills']);
+
+        $organization = sanitize_text_field($_POST['organization']);  
+        $location = sanitize_text_field($_POST['location']);
+        $email = sanitize_email($_POST['email']);
+
+        $updated = $wpdb->update(
+            $table_name,
+            array(
+                'Position' => $position,
+                'Hours' => $hours,
+                'Type' => $type,
+                'Description' => $description,
+                'Skills_required' => $skills,
+                'Organization' => $organization,
+                'Location' => $location,
+                'Email' => $email,
+            ),
+            array('OpportunityID' => $opportunity_id),
+            array('%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s'),
+            array('%d'),
+        );
+
+        if ($updated) {
+            echo '<div class="updated"><p>Opportunity updated successfully!</p></div>';
+        } else {
+            echo '<div class="error"><p>Failed to update the opportunity. Please try again.</p></div>';
+        }
 
     }
 
@@ -291,7 +330,8 @@ function volunteer_admin_page() {
 
         <!-- Submit Button -->
         <div style="text-align: center;">
-            <input type="submit" name="submit" value="Add Opportunity" style="padding: 10px 20px; background-color: #457B9D; color: #F1FAEE; border: 1px solid #1D3557; border-radius: 4px; cursor: pointer; font-size: 16px;">
+            <input type="submit" name="<?php echo $editing_opportunity ? "update" : "submit"; ?>" value="<?php echo $editing_opportunity ? "Update Opportunity" : "Add Opportunity"; ?>" style="padding: 10px 20px; background-color: #457B9D; color: #F1FAEE; border: 1px solid #1D3557; border-radius: 4px; cursor: pointer; font-size: 16px;">
+
         </div>
     </form>
 
