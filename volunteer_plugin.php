@@ -12,7 +12,11 @@
   */
 
   /***
+   * 1. A bug I encounter was the database incrementation. After the plugin was deactivated, and reactivated, the database would continue to increment the ID even after the database was deleted and remade. I added a statement resets the auto-nicrement back to 1 after activating the plugin.
    * 
+   * 2. While I didn't fully get it to work due to time constraints, I was able to make a workaround even through it wasn't ideal. I had a very difficult time figuring out how to get the CSS file to connect properly. It was taking up too much time, and I wasn't able to get it to work. I consulted with several resources including some guides on how to complete it, but wasn't able to get the code to work properly. So, I scraped the idea and used in-line styling which is not ideal, but worked for me.
+   * 
+   * 3. Messing around with the HTML form was one of the trickiest things for me, as I haven't touched on it since first semester. I've played around with how tables and forms worked, using tr, th, td and remembering about thead, and tbody. I went through several iterations on the form and tables before deciding on how I wanted to implement them.
    */
 // Activation Hook - Creates database table
 function volunteer_activation() {
@@ -33,11 +37,15 @@ function volunteer_activation() {
                 ");
     // Insert a sample opportunities
     $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
-                  VALUES('Painter', 'Charity Foundation', 'one-time', 'tester@gmail.com', 'Painting a house for my old uncle', '1234 Elm St', 4, 'Painting, Teamwork, Collaboration');
-                ");
+                  VALUES('Painter', 'Charity Foundation', 'one-time', 'tester@gmail.com', 'Painting a house for my old uncle', '1234 Elm St', 4, 'Painting, Teamwork, Collaboration');");
     $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
-                    VALUES('Volunteer Knitter', 'Hamilton Public Library', 'recurring', 'tester@hpl.ca', 'Knit accessories for children to stay warm', '987 Main St', 6, 'Knitting, Communication, Empathy');
-                    ");
+                    VALUES('Volunteer Knitter', 'Hamilton Public Library', 'recurring', 'tester@hpl.ca', 'Knit accessories for children to stay warm', '987 Main St', 9, 'Knitting, Communication, Empathy');");
+    $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
+                    VALUES('Animal Shelter Volunteer', 'SPCA', 'recurring', 'volunteer@spca.com', 'Assist in caring for animals and maintaining the shelter.', '789 Paw Lane', 15, 'Animal care, cleaning, empathy');");
+    $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
+                    VALUES('Tech Mentor', 'STEM Camp', 'seasonal', 'mentor@stemcamp.org', 'Teach coding basics to youth in underprivileged communities.', '101 Tech St', 60, 'Programming, mentorship, problem-solving');");
+    $wpdb->query("INSERT INTO wp_Opportunities(Position, Organization, Type, Email, Description, Location, Hours, Skills_required)
+                    VALUES('Tree Planting Volunteer', 'City of Hamilton', 'recurring', 'eco@hamilton.ca', 'Plant trees in the local park to improve air quality.', '333 Greenway Blvd', 110, 'Environmental awareness, physical stamina');");
 
     // Reset AUTO_INCREMENT to 1
     $wpdb->query("ALTER TABLE $table_name AUTO_INCREMENT = 1");
