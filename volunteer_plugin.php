@@ -74,10 +74,43 @@ function volunteer_admin_page() {
         );
 
         if($deleted) { 
-            echo '<div class="updated"><p>Opportunity deleted successfully.</p></div>';
-        exit;
+            echo '<div class="updated"><p>Opportunity deleted successfully. Refresh page.</p></div>';
         } else {
             echo '<div class="error"><p>Failed to delete the opportunity.</p></div>';
+        }
+    }
+
+    // Handle Add Button
+    if (isset($_POST['submit'])){
+        $position = sanitize_text_field($_POST['position']);
+        $hours = intval($_POST['hours']);
+        $type = sanitize_text_field($_POST['type']);
+        $description = sanitize_textarea_field($_POST['description']);
+        $skills = sanitize_textarea_field($_POST['skills']);
+
+        $organization = sanitize_text_field($_POST['organization']);  
+        $location = sanitize_text_field($_POST['location']);
+        $email = sanitize_email($_POST['email']);
+
+        $inserted = $wpdb->insert(
+            $table_name,
+            array(
+                'Position'=>$position,
+                'Hours'=>$hours,
+                'Type'=>$type,
+                'Description'=>$description,
+                'Skills_required'=>$skills,
+                'Organization'=>$organization,
+                'Location'=>$location,
+                'Email'=>$email,
+            ),
+            array('%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s')
+        );
+
+        if($inserted) { 
+            echo '<div class="updated"><p>Opportunity added successfully. Refresh page.</p></div>';
+        } else {
+            echo '<div class="error"><p>Failed to add the opportunity.</p></div>';
         }
     }
 
@@ -92,6 +125,7 @@ function volunteer_admin_page() {
     -->
     <h1 style="text-align: center; font-size: 3em; color: #1D3557; padding: 10px;">Volunteer Opportunities</h1>
 
+    <!-- Opportunities Table -->
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 5%; border: 2px solid #1D3557;">
         <thead>
             <tr>
@@ -134,6 +168,7 @@ function volunteer_admin_page() {
             ?>
         </tbody>
     </table>
+
     <!-- Field Form -->
     <form method="post" style="max-width: 1000px; margin: auto;">
         <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
